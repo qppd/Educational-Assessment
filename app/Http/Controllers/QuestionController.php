@@ -22,11 +22,7 @@ class QuestionController extends Controller
             'answer' => 'required',
         ];
 
-        $isValidated = $request->validate($validation);
-        if (!$isValidated)
-            return redirect()->back()->withErrors([
-                'message' => 'Question request failed! Invalid question details.',
-            ]);
+        $request->validate($validation);
 
         $question = new Question;
         $question->examination_id = $request->examination_id;
@@ -35,9 +31,8 @@ class QuestionController extends Controller
         $question->choice_1 = $request->choice_a;
         $question->choice_2 = $request->choice_b;
         $question->choice_3 = $request->choice_c;
-        $question->choice_4 = $request->choice_d;
+$question->choice_4 = $request->choice_d;
         $question->answer = $request->answer;
-        $question->choice_2 = $request->choice_b;
         $question->professor_id = session('administrator');
 
         $isSaved = $question->save();
