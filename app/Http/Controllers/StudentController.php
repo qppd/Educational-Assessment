@@ -35,7 +35,7 @@ class StudentController extends Controller
         )
             ->leftJoin('users', 'students.student_no', '=', 'users.username')
             ->get();
-        return view('students', ['students' => $students]);
+        return view('admin.students', ['students' => $students]);
     }
 
     public function getStudentImages($studentNo)

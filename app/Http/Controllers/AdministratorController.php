@@ -38,7 +38,7 @@ class AdministratorController extends Controller
         )->whereIn('users.role', [0, 1])
             ->get();
 
-        return view('administrators', ['administrators' => $administrators]);
+        return view('admin.administrators', ['administrators' => $administrators]);
     }
 
     function addAdministrator(Request $request)

@@ -142,7 +142,7 @@ class FacultyController extends Controller
 
         //$examinations = [];
 
-        return view('dash', ['students' => $students, 'examinations' => $examinations, 'questions' => $questions, 'rankedStudents' => $rankedStudents]);
+        return view('faculty.dashboard', ['students' => $students, 'examinations' => $examinations, 'questions' => $questions, 'rankedStudents' => $rankedStudents]);
     }
 
     function fetchExaminations()
@@ -197,7 +197,7 @@ class FacultyController extends Controller
         ->get();
         
 
-        return view('exams', ['examinations' => $examinations]);
+        return view('faculty.examinations', ['examinations' => $examinations]);
     }
 
     function fetchQuestions($examination_id)
@@ -240,7 +240,7 @@ class FacultyController extends Controller
             ->where('users.id', '=', session('professor'))
             ->get();
 
-        return view('test', ['questions' => $questions, 'examination_id' => $examination_id, 'examination' => $examination]);
+        return view('faculty.questions', ['questions' => $questions, 'examination_id' => $examination_id, 'examination' => $examination]);
     }
 
     function requestQuestion(Request $request)

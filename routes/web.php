@@ -16,7 +16,7 @@ Route::get('/admin', function () {
     if (session()->has('administrator')) {
         return redirect('/admin/home');
     }
-    return view('login');
+    return view('auth.login');
 });
 
 
@@ -24,7 +24,7 @@ Route::get('/admin/login', function () {
     if (session()->has('administrator')) {
         return redirect('/admin/home');
     }
-    return view('login');
+    return view('auth.login');
 });
 
 Route::post("/admin/login", [LoginController::class, 'administratorLogin'])->middleware('throttle:10,1');
@@ -121,7 +121,7 @@ Route::get('/faculty', function () {
     if (session()->has('faculty')) {
         return redirect('/faculty/dash');
     }
-    return view('faculty');
+    return view('faculty.login');
 });
 
 
@@ -129,7 +129,7 @@ Route::get('/faculty/login', function () {
     if (session()->has('faculty')) {
         return redirect('/faculty/dash');
     }
-    return view('faculty');
+    return view('faculty.login');
 });
 
 Route::post("/faculty/login", [FacultyController::class, 'facultyLogin'])->middleware('throttle:10,1');

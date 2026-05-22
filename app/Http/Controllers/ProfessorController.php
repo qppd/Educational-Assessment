@@ -39,7 +39,7 @@ class ProfessorController extends Controller
             ->where('users.role', '=', 2)
             ->get();
 
-        return view('professors', ['professors' => $professors]);
+        return view('admin.professors', ['professors' => $professors]);
     }
     function addprofessor(Request $request)
     {

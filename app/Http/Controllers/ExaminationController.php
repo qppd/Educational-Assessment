@@ -64,7 +64,7 @@ class ExaminationController extends Controller
         ->groupBy('examinations.id', 'examinations.title', 'examinations.duration', 'examinations.limit', 'examinations.description', 'examinations.status', 'examinations.examination_at', 'examinations.created_at', 'examinations.updated_at', 'examinations.administrator_id')
         ->get();
 
-        return view('examinations', ['examinations' => $examinations]);
+        return view('admin.examinations', ['examinations' => $examinations]);
     }
 
     function manageExamination($examination_id)
@@ -102,7 +102,7 @@ class ExaminationController extends Controller
             ->where('questions.examination_id', '=', $examination_id)
             ->get();
 
-        return view('questions', ['questions' => $questions, 'examination_id' => $examination_id, 'examination' => $examination]);
+        return view('admin.questions', ['questions' => $questions, 'examination_id' => $examination_id, 'examination' => $examination]);
 
     }
 
@@ -130,7 +130,7 @@ class ExaminationController extends Controller
             ->where('reviewers.examination_id', '=', $examination_id)
             ->get();
 
-        return view('reviewers', ['reviewers' => $reviewers, 'examination_id' => $examination_id, 'examination' => $examination]);
+        return view('admin.reviewers', ['reviewers' => $reviewers, 'examination_id' => $examination_id, 'examination' => $examination]);
 
     }
 
