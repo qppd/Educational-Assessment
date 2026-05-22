@@ -1,19 +1,36 @@
-/.phpunit.cache
-/node_modules
-/public/build
-/public/hot
-/public/storage
-/storage/*.key
-/vendor
-.env
-.env.backup
-.env.production
-.phpunit.result.cache
-Homestead.json
-Homestead.yaml
-auth.json
-npm-debug.log
-yarn-error.log
-/.fleet
-/.idea
-/.vscode
+     1|/.phpunit.cache
+     2|/node_modules
+     3|/public/build
+     4|/public/hot
+     5|/public/storage
+     6|/storage/*.key
+     7|/vendor
+     8|.env
+     9|.env.backup
+    10|.env.production
+    11|.phpunit.result.cache
+    12|Homestead.json
+    13|Homestead.yaml
+    14|auth.json
+    15|npm-debug.log
+    16|yarn-error.log
+    17|/.fleet
+    18|/.idea
+    19|/.vscode
+    20|
+# Raw SQL dumps (contain real student data)
+*.sql
+
+# Duplicate public dir
+/public_html/
+
+# Node modules
+/node_modules/
+
+# Vendor
+/vendor/
+
+# IDE
+.vscode/
+.idea/
+*.swp

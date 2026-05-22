@@ -73,25 +73,18 @@ class StudentController extends Controller
             'middlename' => 'min:0|max:255',
         ];
 
-        $validated = $request->validate($validation);
+        $request->validate($validation);
 
-        if (!$validated) {
-            return redirect('students');
-        } else {
+        $password = Hash::make('default' . $request->password);
 
+        $student = new Student;
+        $student->student_no = $request->student_no;
+        $student->lastname = $request->lastname;
+        $student->firstname = $request->firstname;
+        $student->middlename = $request->middlename;
+        $student->save();
 
-
-            $password = Hash::make('default' . $request->password);
-
-            $student = new Student;
-            $student->student_no = $request->student_no;
-            $student->lastname = $request->lastname;
-            $student->firstname = $request->firstname;
-            $student->middlename = $request->middlename;
-            $student->save();
-
-            return redirect()->back()->with('success', 'Student has been added successfully!');
-        }
+        return redirect()->back()->with('success', 'Student has been added successfully!');
     }
 
     function editStudent(Request $request)
@@ -139,7 +132,7 @@ class StudentController extends Controller
 
     }
 
-    function editStudentt(Request $request)
+    function editStudent(Request $request)
     {
         $validation = [
             'id' => 'required',

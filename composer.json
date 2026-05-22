@@ -1,19 +1,17 @@
 {
-    "name": "laravel/laravel",
+    "name": "qppd/educational-assessment",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "TOPCIT - Educational Assessment Laravel WebApp with face recognition",
+    "keywords": ["laravel", "topcit", "educational", "assessment"],
     "license": "MIT",
     "require": {
-        "php": "^8.1",
+        "php": "^8.3",
         "guzzlehttp/guzzle": "^7.2",
-        "laravel/framework": "^10.10",
-        "laravel/sanctum": "^3.2",
+        "laravel/framework": "^12.0",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
-        "intervention/image": "dev-master",
-        "maatwebsite/excel": "^3.1"
-
-
+        "intervention/image": "^3.0",
+        "maatwebsite/excel": "^3.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

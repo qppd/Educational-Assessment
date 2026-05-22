@@ -38,6 +38,7 @@ class LoginController extends Controller
                 ]);
             }
 
+            $req->session()->regenerate();
             $req->session()->put('administrator', $userId);
             $req->session()->put('role', $userRole);
             $req->session()->put('name', $userName);

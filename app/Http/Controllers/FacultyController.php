@@ -55,6 +55,7 @@ class FacultyController extends Controller
                 ]);
             }
 
+            $request->session()->regenerate();
             $request->session()->put('professor', $userId);
             $request->session()->put('employee_no', $userEmployeeNo);
             $request->session()->put('role', $userRole);
@@ -79,41 +80,33 @@ class FacultyController extends Controller
             'curr_password' => 'required',
         ];
 
-        $isValidated = $request->validate($validation);
+        $request->validate($validation);
 
-        if (!$isValidated) {
-            return redirect()->back()->withErrors([
-                'message' => 'Password or Confirm password invalid!',
-            ]);
-        } else {
-
-            $user = User::find($request->user_id);
+        $user = User::find($request->user_id);
 
 
-            if (Hash::check($request->curr_password, $user->password)) {
-                $user->password = Hash::make($request->password);
+        if (Hash::check($request->curr_password, $user->password)) {
+            $user->password = Hash::make($request->password);
 
 
-                $ispasswordUpdated = $user->save();
+            $ispasswordUpdated = $user->save();
 
-                if ($ispasswordUpdated) {
-                    if (session()->has('professor')) {
-                        session()->pull('professor');
-                    }
-
-                    return redirect('/faculty/login')->with('success', 'Password has been updated  successfully!');
-                } else {
-                    return redirect()->back()->withErrors([
-                        'message' => 'Current password invalid!',
-                    ]);
+            if ($ispasswordUpdated) {
+                if (session()->has('professor')) {
+                    session()->pull('professor');
                 }
 
+                return redirect('/faculty/login')->with('success', 'Password has been updated  successfully!');
             } else {
                 return redirect()->back()->withErrors([
                     'message' => 'Current password invalid!',
                 ]);
             }
 
+        } else {
+            return redirect()->back()->withErrors([
+                'message' => 'Current password invalid!',
+            ]);
         }
 
     }

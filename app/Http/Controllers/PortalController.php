@@ -347,12 +347,7 @@ class PortalController extends Controller
             ]);
         }
 
-        $isValidated = $request->validate($validation);
-        if (!$isValidated) {
-            return redirect()->back()->withErrors([
-                'message' => 'Registration failed! Check your inputs.',
-            ]);
-        }
+        $request->validate($validation);
 
         if ($request->password != $request->confirm_password) {
             return redirect()->back()->withErrors([
@@ -491,6 +486,8 @@ class PortalController extends Controller
             'username' => 'required',
             'ppassword' => 'required',
         ];
+
+        $request->validate($validation);
 
         // Use the Eloquent model to find a student by student_no
         $student = User::where('username', $request->username)->first();

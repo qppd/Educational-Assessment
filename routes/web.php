@@ -27,7 +27,7 @@ Route::get('/admin/login', function () {
     return view('login');
 });
 
-Route::post("/admin/login", [LoginController::class, 'administratorLogin']);
+Route::post("/admin/login", [LoginController::class, 'administratorLogin'])->middleware('throttle:10,1');
 
 // Login Route
 
@@ -63,7 +63,7 @@ Route::post("/admin/administrator/delete", [AdministratorController::class, 'rem
 // Students Route
 Route::get("/admin/students", [StudentController::class, 'fetchStudents']);
 Route::post("/admin/student/add", [StudentController::class, 'addStudent']);
-Route::post("/admin/student/edit", [StudentController::class, 'editStudentt']);
+Route::post("/admin/student/edit", [StudentController::class, 'editStudent']);
 Route::post("/admin/student/editaccount", [StudentController::class, 'editStudent']);
 Route::get("/admin/student/delete", [StudentController::class, 'removeStudent']);
 Route::post("/admin/student/upload", [StudentController::class, 'uploadStudents']);
@@ -132,7 +132,7 @@ Route::get('/faculty/login', function () {
     return view('faculty');
 });
 
-Route::post("/faculty/login", [FacultyController::class, 'facultyLogin']);
+Route::post("/faculty/login", [FacultyController::class, 'facultyLogin'])->middleware('throttle:10,1');
 
 // Login Route
 
@@ -156,7 +156,7 @@ Route::get('/faculty/logout', function () {
 Route::get("/", [PortalController::class, 'portals']);
 Route::get("/portal", [PortalController::class, 'portals']);
 Route::get("/portal/forgot", [PortalController::class, 'forgotPassword']);
-Route::post("/portal/login", [PortalController::class, 'studentLogin']);
+Route::post("/portal/login", [PortalController::class, 'studentLogin'])->middleware('throttle:10,1');
 Route::get("/portal/register", [PortalController::class, 'registerPage']);
 Route::post("/portal/register/add", [PortalController::class, 'studentRegister']);
 Route::post("/portal/forgot/password/update", [PortalController::class, 'saveNewPassword']);
