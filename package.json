@@ -6,8 +6,13 @@
         "build": "vite build"
     },
     "devDependencies": {
-        "axios": "^1.1.2",
-        "laravel-vite-plugin": "^0.7.5",
-        "vite": "^4.0.0"
+        "axios": "^1.7.0",
+        "laravel-vite-plugin": "^1.2.0",
+        "vite": "^6.0.0",
+        "tailwindcss": "^4.0.0",
+        "@tailwindcss/vite": "^4.0.0",
+        "alpinejs": "^3.14.0",
+        "aos": "^2.3.4",
+        "@fontsource/inter": "^5.1.0"
     }
 }
