@@ -9,21 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.tailwindcss.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
-    <style>
-        /* Override DataTables */
-        div.dt-container .dt-length, div.dt-container .dt-search {
-            margin-bottom: 1rem;
-        }
-        div.dt-container .dt-paging nav {
-            margin-top: 1rem;
-        }
-        .dt-container select, .dt-container input {
-            @apply input-field inline-block w-auto;
-        }
-    </style>
 </head>
 <body x-data="{ sidebar: true, mobileSidebar: false }" class="bg-dark text-gray-100 font-sans antialiased min-h-screen">
 
@@ -130,8 +117,5 @@
     </div>
 
     @stack('scripts')
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
-    @stack('datatables')
 </body>
 </html>

@@ -41,6 +41,19 @@
         </div>
     </div>
 
+    <!-- Resume Banner -->
+    <div x-show="showResumeBanner"
+         class="max-w-6xl mx-auto px-4 pt-4"
+         x-cloak>
+        <div class="flex items-center justify-between bg-primary/20 border border-primary/30 rounded-lg px-4 py-3 text-sm">
+            <span class="text-primary-light">📋 Resumed from previous session — answers restored</span>
+            <button @@click="showResumeBanner = false"
+                    class="text-gray-400 hover:text-white ml-4 flex-shrink-0">
+                <span class="text-lg leading-none">&times;</span>
+            </button>
+        </div>
+    </div>
+
     <div class="max-w-6xl mx-auto px-4 py-6 flex gap-6">
         <!-- Question Area -->
         <div class="flex-1 min-w-0">
@@ -171,21 +184,49 @@
             duration: {{ ($examination[0]->duration ?? 10) * 60 }},
             showSubmitModal: false,
             autoSaveTimer: null,
+            timerSaveInterval: null,
+            showResumeBanner: false,
 
             get skippedCount() {
                 return this.questions.filter(q => !this.answers[q.id] || !this.answers[q.id].trim()).length;
             },
 
             init() {
-                // Restore saved answers
-                const saved = sessionStorage.getItem('exam_answers_{{ $examination[0]->id ?? 0 }}');
+                // Restore saved answers from localStorage
+                const saved = localStorage.getItem('exam_answers_{{ $examination[0]->id ?? 0 }}');
                 if (saved) {
-                    try { this.answers = JSON.parse(saved); } catch(e) {}
+                    try {
+                        this.answers = JSON.parse(saved);
+                        // Show resume banner
+                        this.showResumeBanner = true;
+                    } catch(e) {}
+                }
+                // Restore saved timer from localStorage
+                const savedTimer = localStorage.getItem('exam_timer_{{ $examination[0]->id ?? 0 }}');
+                if (savedTimer) {
+                    try {
+                        const parsed = parseInt(savedTimer, 10);
+                        if (!isNaN(parsed) && parsed > 0 && parsed <= this.duration) {
+                            this.timeLeft = parsed;
+                        }
+                    } catch(e) {}
+                }
+                // Automatically resume: find first unanswered question
+                if (saved) {
+                    const firstUnanswered = this.questions.findIndex(q => !this.answers[q.id] || !this.answers[q.id].trim());
+                    if (firstUnanswered !== -1) {
+                        this.currentQuestion = firstUnanswered;
+                    } else {
+                        this.currentQuestion = 0;
+                    }
                 }
                 // Start timer
                 this.startTimer();
-                // Auto-save every 30s
+                // Auto-save every 30s, plus save timer to localStorage every 10s
                 this.autoSaveTimer = setInterval(() => this.autoSave(), 30000);
+                this.timerSaveInterval = setInterval(() => {
+                    localStorage.setItem('exam_timer_{{ $examination[0]->id ?? 0 }}', this.timeLeft);
+                }, 10000);
                 // Keyboard shortcuts
                 document.addEventListener('keydown', (e) => {
                     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
@@ -218,7 +259,7 @@
             },
 
             autoSave() {
-                sessionStorage.setItem('exam_answers_{{ $examination[0]->id ?? 0 }}', JSON.stringify(this.answers));
+                localStorage.setItem('exam_answers_{{ $examination[0]->id ?? 0 }}', JSON.stringify(this.answers));
             },
 
             startTimer() {
@@ -258,11 +299,13 @@
             confirmSubmit() {
                 clearInterval(this.timer);
                 clearInterval(this.autoSaveTimer);
+                clearInterval(this.timerSaveInterval);
                 // Populate hidden form
                 const questionIds = this.questions.map(q => q.id);
                 document.getElementById('question_ids').value = JSON.stringify(questionIds);
                 document.getElementById('answers_data').value = JSON.stringify(this.answers);
-                sessionStorage.removeItem('exam_answers_{{ $examination[0]->id ?? 0 }}');
+                localStorage.removeItem('exam_answers_{{ $examination[0]->id ?? 0 }}');
+                localStorage.removeItem('exam_timer_{{ $examination[0]->id ?? 0 }}');
                 document.getElementById('submit-form').submit();
             }
         }

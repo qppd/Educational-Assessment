@@ -12,11 +12,11 @@ use App\Models\User;
 
 class AdministratorController extends Controller
 {
-    function fetchAdministrators()
+    function fetchAdministrators(Request $request)
     {
-        //$administrators = Administrator::all();
+        $search = $request->get('search', '');
 
-        $administrators = User::select(
+        $query = User::select(
             'users.id',
             'users.username',
             DB::raw('(CASE
@@ -35,8 +35,17 @@ class AdministratorController extends Controller
             'users.status',
             'users.created_at',
             'users.updated_at',
-        )->whereIn('users.role', [0, 1])
-            ->get();
+        )->whereIn('users.role', [0, 1]);
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('users.firstname', 'like', "%{$search}%")
+                  ->orWhere('users.surname', 'like', "%{$search}%")
+                  ->orWhere('users.email', 'like', "%{$search}%");
+            });
+        }
+
+        $administrators = $query->paginate(25);
 
         return view('admin.administrators', ['administrators' => $administrators]);
     }

@@ -16,13 +16,11 @@ use Maatwebsite\Excel\Concerns\FromArray;
 class ProfessorController extends Controller
 {
 
-    function fetchProfessors()
+    function fetchProfessors(Request $request)
     {
+        $search = $request->get('search', '');
 
-        //$professors = Professor::all();
-        //SELECT `id`, `role`, `username`, `firstname`, `middlename`, `surname`, 
-        //`photo`, `email`, `contact`, `password`, `status`, `created_at`, `updated_at` FROM `users` WHERE 1
-        $professors = User::select(
+        $query = User::select(
             'users.id',
             'users.username AS employee_no',
             'users.firstname',
@@ -36,8 +34,18 @@ class ProfessorController extends Controller
             WHEN users.status = 1 THEN "Enabled"
             ELSE "Unknown" END) AS status_text'),
         )
-            ->where('users.role', '=', 2)
-            ->get();
+            ->where('users.role', '=', 2);
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('users.firstname', 'like', "%{$search}%")
+                  ->orWhere('users.surname', 'like', "%{$search}%")
+                  ->orWhere('users.email', 'like', "%{$search}%")
+                  ->orWhere('users.username', 'like', "%{$search}%");
+            });
+        }
+
+        $professors = $query->paginate(25);
 
         return view('admin.professors', ['professors' => $professors]);
     }

@@ -18,9 +18,11 @@ use Maatwebsite\Excel\Concerns\FromArray;
 
 class StudentController extends Controller
 {
-    function fetchStudents()
+    function fetchStudents(Request $request)
     {
-        $students = Student::select(
+        $search = $request->get('search', '');
+
+        $query = Student::select(
             'students.id',
             'students.student_no',
             'students.lastname',
@@ -33,8 +35,19 @@ class StudentController extends Controller
             'users.status AS user_status',
             DB::raw('CASE WHEN users.username IS NOT NULL THEN "with account" ELSE "without account" END as account_status'),
         )
-            ->leftJoin('users', 'students.student_no', '=', 'users.username')
-            ->get();
+            ->leftJoin('users', 'students.student_no', '=', 'users.username');
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('students.student_no', 'like', "%{$search}%")
+                  ->orWhere('students.lastname', 'like', "%{$search}%")
+                  ->orWhere('students.firstname', 'like', "%{$search}%")
+                  ->orWhere('users.email', 'like', "%{$search}%");
+            });
+        }
+
+        $students = $query->paginate(25);
+
         return view('admin.students', ['students' => $students]);
     }
 

@@ -37,7 +37,7 @@ class ExaminationController extends Controller
         // )
         // ->leftJoin('questions', 'examinations.id', '=', 'questions.examination_id')
         // ->groupBy('examinations.id', 'examinations.title', 'examinations.duration', 'examinations.limit', 'examinations.description', 'examinations.status', 'examinations.examination_at', 'examinations.created_at', 'examinations.updated_at', 'examinations.administrator_id')
-        // ->get();
+        // ->paginate(25);
 
         $examinations = Examination::select(
             'examinations.id',
@@ -62,7 +62,7 @@ class ExaminationController extends Controller
                 ->where('questions.status', '=', 1);
         })
         ->groupBy('examinations.id', 'examinations.title', 'examinations.duration', 'examinations.limit', 'examinations.description', 'examinations.status', 'examinations.examination_at', 'examinations.created_at', 'examinations.updated_at', 'examinations.administrator_id')
-        ->get();
+        ->paginate(25);
 
         return view('admin.examinations', ['examinations' => $examinations]);
     }
@@ -100,7 +100,7 @@ class ExaminationController extends Controller
         )
             ->join('users', 'users.id', '=', 'questions.professor_id')
             ->where('questions.examination_id', '=', $examination_id)
-            ->get();
+            ->paginate(25);
 
         return view('admin.questions', ['questions' => $questions, 'examination_id' => $examination_id, 'examination' => $examination]);
 
@@ -128,7 +128,7 @@ class ExaminationController extends Controller
         )
             ->join('users', 'users.id', '=', 'reviewers.professor_id')
             ->where('reviewers.examination_id', '=', $examination_id)
-            ->get();
+            ->paginate(25);
 
         return view('admin.reviewers', ['reviewers' => $reviewers, 'examination_id' => $examination_id, 'examination' => $examination]);
 
