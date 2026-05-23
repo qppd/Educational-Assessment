@@ -2,21 +2,42 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        // Super Admin
+        User::create([
+            'username' => 'admin',
+            'surname' => 'Administrator',
+            'firstname' => 'Super',
+            'middlename' => '',
+            'email' => 'admin@topcit.edu',
+            'contact' => '09170000000',
+            'password' => Hash::make('admin123'),
+            'role' => 0,
+            'status' => 1,
+            'photo' => 'administrator.jpg',
+        ]);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Sample Professor
+        User::create([
+            'username' => 'prof001',
+            'surname' => 'Doe',
+            'firstname' => 'John',
+            'middlename' => 'M',
+            'email' => 'john.doe@topcit.edu',
+            'contact' => '09170000001',
+            'password' => Hash::make('password'),
+            'role' => 2,
+            'status' => 1,
+            'photo' => 'professor.jpg',
+        ]);
+
+        echo "Seeded: 1 admin, 1 professor\n";
     }
 }
